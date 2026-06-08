@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        body{
+            font-family: Arial;
+            max-width: 500px;
+            margin: 50px auto;
+        }
+
+        input{
+            padding:10px;
+            width:70%;
+        }
+
+        button{
+            padding:10px;
+        }
+
+        li{
+            margin:10px 0;
+        }
+
+        .completed{
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<h2>To-Do List App</h2>
+
+<input type="text" id="taskInput" placeholder="Enter task">
+<button onclick="addTask()">Add</button>
+
+<h3>Pending Tasks: <span id="count">0</span></h3>
+
+<ul id="taskList"></ul>
+
+<script>
+function addTask() {
+    let taskInput = document.getElementById("taskInput");
+    let taskText = taskInput.value;
+
+    if(taskText === "") return;
+
+    let li = document.createElement("li");
+
+    li.innerHTML = `
+        <span onclick="toggleTask(this)">${taskText}</span>
+        <button onclick="deleteTask(this)">Delete</button>
+    `;
+
+    document.getElementById("taskList").appendChild(li);
+    taskInput.value = "";
+    updateCount();
+}
+
+function toggleTask(element){
+    element.classList.toggle("completed");
+    updateCount();
+}
+
+function deleteTask(button){
+    button.parentElement.remove();
+    updateCount();
+}
+
+function updateCount(){
+    let tasks = document.querySelectorAll("#taskList li span");
+    let pending = 0;
+
+    tasks.forEach(task=>{
+        if(!task.classList.contains("completed")){
+            pending++;
+        }
+    });
+
+    document.getElementById("count").innerText = pending;
+}
+</script>
+
+</body>
+</html>
